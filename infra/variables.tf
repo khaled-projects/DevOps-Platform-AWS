@@ -3,6 +3,10 @@ variable "aws_region" {
   type        = string
   default     = "us-east-1"
 }
+variable "account_id" {
+  description = "AWS Account ID"
+  type        = string
+}
 
 variable "name_prefix" {
   description = "Prefix for naming"
@@ -61,10 +65,11 @@ variable "iam_roles" {
   type = map(object({
     principal_type = string
     identifiers    = list(string)
-    policy_arn     = string
+    policy_arns    = list(string)   # <- FIX: ici on accepte une liste
   }))
   default = {}
 }
+
 
 variable "frontend_bucket" {
   description = "S3 bucket name"
@@ -83,9 +88,9 @@ variable "frontend_bucket" {
 #  default     = "app"
 #}
 
-#variable "tags" {
-#  description = "Common tags"
+variable "tags" {
+  description = "Common tags"
 
- # type        = map(string)
- # default     = { Owner = "devops" }
-#}
+  type        = map(string)
+  default     = { Owner = "devops" }
+}

@@ -1,9 +1,9 @@
 variable "roles" {
-  description = "Map of IAM roles to create"
+  description = "IAM roles with trust and policies"
   type = map(object({
-    principal_type = string       # e.g. "Federated" ou "Service"
-    identifiers    = list(string) # liste d'identifiants (ARN OIDC, service principal…)
-    policy_arns    = list(string) # liste de ARNs de policies à attacher
+    principal_type = string       # e.g. "Federated", "Service"
+    identifiers    = list(string) # e.g. ["lambda.amazonaws.com"]
+    policy_arns    = list(string) # e.g. ["arn:aws:iam::aws:policy/AWSLambdaBasicExecutionRole"]
   }))
 }
 

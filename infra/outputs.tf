@@ -10,6 +10,6 @@ output "frontend_bucket" {
   value = module.s3.bucket_name
 }
 
-output "dns_record" {
-  value = module.route53.record_fqdn
-}
+#output "dns_record" {
+#  value = module.route53.record_fqdn
+#}
