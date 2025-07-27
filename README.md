@@ -87,7 +87,7 @@ aws-devops-platform/
 │  ├─ frontend/             # React app (Vite ou Next.js)
 │  │  ├─ Dockerfile         # Optionnel pour conteneurisation
 │  │  └─ src/
-│  └─ backend-container/    # Node.js app pour EKS
+│  └─ backend/    # Node.js app pour EKS
 │     ├─ Dockerfile
 │     └─ src/
 │
@@ -140,7 +140,7 @@ serverless deploy --aws-profile devops-platform
 
 ```bash
 cd app/frontend && docker build -t frontend:latest .
-cd app/backend-container && docker build -t backend:latest .
+cd app/backend && docker build -t backend:latest .
 ```
 
 ### 5. Déployer via Helm (dans EKS)
