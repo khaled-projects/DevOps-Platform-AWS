@@ -73,7 +73,7 @@ variable "frontend_bucket" {
 }
 
 #variable "domain_name" {
-"  description = "Route53 zone domain"
+# description = "Route53 zone domain"
 #  type        = string
 #}
 
@@ -83,8 +83,9 @@ variable "frontend_bucket" {
 #  default     = "app"
 #}
 
-variable "tags" {
-  description = "Common tags"
-  type        = map(string)
-  default     = { Owner = "devops" }
-}
+#variable "tags" {
+#  description = "Common tags"
+
+ # type        = map(string)
+ # default     = { Owner = "devops" }
+#}
