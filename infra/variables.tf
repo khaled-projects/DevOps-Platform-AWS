@@ -72,16 +72,16 @@ variable "frontend_bucket" {
   default     = "frontend-spa-bucket"
 }
 
-variable "domain_name" {
-  description = "Route53 zone domain"
-  type        = string
-}
+#variable "domain_name" {
+"  description = "Route53 zone domain"
+#  type        = string
+#}
 
-variable "record_name" {
-  description = "DNS record"
-  type        = string
-  default     = "app"
-}
+#variable "record_name" {
+#  description = "DNS record"
+#  type        = string
+#  default     = "app"
+#}
 
 variable "tags" {
   description = "Common tags"

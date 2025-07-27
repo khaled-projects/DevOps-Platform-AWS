@@ -31,9 +31,9 @@ module "s3" {
   tags        = var.tags
 }
 
-module "route53" {
-  source       = "./modules/route53"
-  domain_name  = var.domain_name
-  record_name  = var.record_name
-  alias_target = module.s3.frontend.website_endpoint
-}
+#module "route53" {
+ # source       = "./modules/route53"
+ # domain_name  = var.domain_name
+ # record_name  = var.record_name
+ # alias_target = module.s3.frontend.website_endpoint
+#}
