@@ -5,7 +5,7 @@ provider "aws" {
 module "vpc" {
   source         = "./modules/vpc"
   name_prefix    = var.name_prefix
-  cidr_block     = var.vpc_cidr
+  vpc_cidr       = var.vpc_cidr
   public_subnets  = var.public_subnets
   private_subnets = var.private_subnets
 }
@@ -58,15 +58,17 @@ data "aws_caller_identity" "current" {}
 
 data "aws_eks_cluster" "this" {
   name = module.eks.cluster_name
+  depends_on = [module.eks]
 }
 
 data "aws_iam_openid_connect_provider" "oidc" {
   url = data.aws_eks_cluster.this.identity[0].oidc[0].issuer
+  depends_on = [data.aws_eks_cluster.this]
 }
 
 locals {
   account_id         = data.aws_caller_identity.current.account_id
-  region             = var.region
+  region             = var.aws_region
   github_oidc_arn    = "arn:aws:iam::${local.account_id}:oidc-provider/token.actions.githubusercontent.com"
   eks_oidc_arn       = data.aws_iam_openid_connect_provider.oidc.arn
 

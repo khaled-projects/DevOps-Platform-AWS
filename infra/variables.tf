@@ -44,21 +44,6 @@ variable "cluster_version" {
   default     = "1.24"
 }
 
-variable "node_group" {
-  description = "Node group config"
-  type = object({
-    desired_capacity = number
-    max_capacity     = number
-    min_capacity     = number
-    instance_types   = list(string)
-  })
-  default = {
-    desired_capacity = 2
-    max_capacity     = 3
-    min_capacity     = 1
-    instance_types   = ["t3.medium"]
-  }
-}
 
 variable "iam_roles" {
   description = "Map of IAM roles"

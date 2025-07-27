@@ -23,14 +23,22 @@ resource "aws_iam_role" "this" {
 
 resource "aws_iam_role_policy_attachment" "attach" {
   for_each = {
-    for role_key, role_def in var.roles :
-    for policy_arn in role_def.policy_arns :
-    "${role_key}-${replace(policy_arn, ":", "_")}" => {
-      role       = role_key
-      policy_arn = policy_arn
+    for pair in flatten([
+      for role_key, role_def in var.roles : [
+        for policy_arn in role_def.policy_arns : {
+          key        = "${role_key}-${replace(policy_arn, ":", "_")}"
+          role       = role_key
+          policy_arn = policy_arn
+        }
+      ]
+    ]) : pair.key => {
+      role       = pair.role
+      policy_arn = pair.policy_arn
     }
   }
 
-  role       = aws_iam_role.this[each.value.role].name
+  role       = each.value.role
   policy_arn = each.value.policy_arn
 }
+
+
