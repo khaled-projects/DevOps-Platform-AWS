@@ -1,7 +1,6 @@
 # Enterprise DevOps Platform on AWS
 
-Ce projet simule une vraie plateforme DevOps d'entreprise avec une approche mixte : Kubernetes (EKS) **et Serverless**. Il permet de démontrer toutes les compétences clés DevOps : IaC, CI/CD, monitoring, sécurité, et automatisation.
-
+Ce projet simule une vraie plateforme DevOps d'entreprise avec une approche mixte : Kubernetes (EKS) **et Serverless**.
 ---
 
 ## 🎯 Objectifs
@@ -87,7 +86,7 @@ aws-devops-platform/
 │  ├─ frontend/             # React app (Vite ou Next.js)
 │  │  ├─ Dockerfile         # Optionnel pour conteneurisation
 │  │  └─ src/
-│  └─ backend/    # Node.js app pour EKS
+│  └─ backend/              # Node.js app pour EKS
 │     ├─ Dockerfile
 │     └─ src/
 │
@@ -114,14 +113,23 @@ aws-devops-platform/
 
 ---
 
-## 🚀 Lancer le projet
+## 🚀 Lancer le projet (2 approches)
 
-### 1. Pré-requis
+---
 
-* AWS CLI configurée (`aws configure`)
-* Docker, Node.js, Terraform, Serverless Framework, Helm installés
+### 🔹 Méthode 1 : **Déploiement 100% sur EKS**
 
-### 2. Provisionner l'infrastructure (EKS, S3, Route53...)
+> Déploiement des applications frontend et backend en conteneurs dans Kubernetes (EKS)
+
+#### 1. Prérequis
+
+* AWS CLI (`aws configure`)
+* Docker
+* Node.js
+* Terraform
+* Helm
+
+#### 2. Provisionner l’infrastructure
 
 ```bash
 cd infra/
@@ -129,35 +137,57 @@ terraform init
 terraform apply
 ```
 
-### 3. Déployer l’API Lambda (Serverless Backend)
-
-```bash
-cd serverless/
-serverless deploy --aws-profile devops-platform
-```
-
-### 4. Build + push images Docker frontend/backend (EKS)
+#### 3. Builder et push les images Docker
 
 ```bash
 cd app/frontend && docker build -t frontend:latest .
 cd app/backend && docker build -t backend:latest .
 ```
 
-### 5. Déployer via Helm (dans EKS)
+#### 4. Déployer dans EKS avec Helm
 
 ```bash
 helm upgrade --install frontend charts/frontend-chart -n devops
 helm upgrade --install backend charts/backend-chart -n devops
 ```
 
-### 6. Consulter les outils de monitoring
+#### 5. Accéder à l’application
 
-* Grafana (port-forward ou Ingress)
-* CloudWatch Logs (via Fluent Bit)
+* Frontend via ALB ou Ingress
+* Backend via ClusterIP/NodePort ou Ingress
 
-### 7. Tester les backups automatisés
+---
 
-* Vérifier que Lambda → S3 fonctionne via EventBridge ou CloudWatch Events
+### 🔹 Méthode 2 : **Migration vers Architecture Serverless**
+
+> Backend migré vers Lambda (Fastify sur API Gateway). Le frontend reste hébergé sur S3 + CloudFront.
+
+#### 1. Déployer l’infrastructure (comme étape 1)
+
+```bash
+cd infra/
+terraform apply
+```
+
+#### 2. Déployer le backend Serverless
+
+```bash
+cd serverless/
+serverless deploy --aws-profile devops-platform
+```
+
+#### 3. Déployer le frontend sur S3 + CloudFront (si configuré)
+
+```bash
+cd app/frontend
+npm run build
+aws s3 sync dist/ s3://<your-s3-bucket> --delete
+```
+
+#### 4. Accéder à l’application
+
+* Frontend via CloudFront + Route53
+* Backend via API Gateway (Lambda)
 
 ---
 
