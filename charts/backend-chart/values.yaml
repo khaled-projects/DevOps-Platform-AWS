@@ -121,3 +121,21 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+env:
+  - name: DB_HOST
+    value: "mysql.devops.svc.cluster.local"
+  - name: DB_PORT
+    value: "3306"
+  - name: DB_USER
+    valueFrom:
+      secretKeyRef:
+        name: mysql-secret
+        key: username
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: mysql-secret
+        key: password
+  - name: DB_NAME
+    value: "devopsdb"
+
